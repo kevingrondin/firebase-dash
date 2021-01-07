@@ -17,6 +17,7 @@ export const db = firebase.firestore();
 const auth = firebase.auth();
 // const storage = firebase.storage();
 
+// CRUD document firebase
 export const createUserDocument = async (user) => {
   const docRef = db.doc(`/users/${user.uid}`);
   const userProfile = {
@@ -35,12 +36,12 @@ export const createUserDocument = async (user) => {
   // write to Cloud Firestore
   return docRef.set(userProfile);
 };
-
 export const updateUserDocument = async (user) => {
   const docRef = db.doc(`/users/${user.uid}`);
   return docRef.update(user);
 };
 
+// AUTH firebase
 export const signup = async ({ firstName, lastName, email, password }) => {
   const resp = await auth.createUserWithEmailAndPassword(email, password);
   const user = resp.user;
@@ -48,9 +49,7 @@ export const signup = async ({ firstName, lastName, email, password }) => {
   await createUserDocument(user);
   return user;
 };
-
 export const logout = () => firebase.auth().signOut();
-
 export const login = async ({ email, password }) => {
   const resp = await auth.signInWithEmailAndPassword(email, password);
   return resp.user;
