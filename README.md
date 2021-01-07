@@ -7,4 +7,9 @@
 - Middleware pour les routes ( react-router-dom@6 me facilite pas la tâches )
 - Remplacer le context user avec l'utilisation de react-query
 
-# Question
+# Mettre un utilisateur root
+
+- Telecharger la clée admin sdk
+- Creer l'utilisateur
+- node src/set-root.js USER_UID
+
