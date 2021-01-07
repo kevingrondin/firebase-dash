@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useSession } from "../context/UserContext";
 import { db, updateUserDocument } from "../firebase";
+import { ProfileImage } from "../components/ProfileImage";
 
 const Profile = () => {
   const { user } = useSession();
@@ -48,7 +49,7 @@ const Profile = () => {
       style={{ maxWidth: 960, margin: "50px auto" }}
     >
       <div className="ui grid stackable">
-        {/* <ProfileImage id={params.id} /> */}
+        <ProfileImage id={id} />
         <form className={formClassname} onSubmit={onSubmit}>
           <div className="fields">
             <div className="eight wide field">

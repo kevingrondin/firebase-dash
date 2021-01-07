@@ -1,7 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
-// import "firebase/storage";
+import "firebase/storage";
 
 firebase.initializeApp({
   apiKey: process.env.REACT_APP_API_KEY,
@@ -15,7 +15,7 @@ console.log("firebase option", firebase.app().options);
 
 export const db = firebase.firestore();
 const auth = firebase.auth();
-// const storage = firebase.storage();
+const storage = firebase.storage();
 
 // CRUD document firebase
 export const createUserDocument = async (user) => {
@@ -39,6 +39,25 @@ export const createUserDocument = async (user) => {
 export const updateUserDocument = async (user) => {
   const docRef = db.doc(`/users/${user.uid}`);
   return docRef.update(user);
+};
+export const uploadImage = (userId, file, progress) => {
+  return new Promise((resolve, reject) => {
+    // create file reference
+    const filePath = `users/${userId}/profile-image`;
+    const fileRef = storage.ref().child(filePath);
+
+    // upload task
+    const uploadTask = fileRef.put(file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => progress(snapshot),
+      (error) => reject(error),
+      () => {
+        resolve(uploadTask.snapshot.ref);
+      }
+    );
+  });
 };
 
 // AUTH firebase
