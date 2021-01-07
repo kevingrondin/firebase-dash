@@ -14,11 +14,10 @@ const Signup = () => {
     try {
       newUser = await mutateAsync({ ...data });
       reset();
+      navigate(`/profile/${newUser.uid}`, { replace: true });
     } catch (err) {
       console.log(err);
     }
-
-    if (newUser) navigate(`/profile/${newUser.uid}`, { replace: true });
   });
 
   const formClassName = `ui form ${isLoading ? "loading" : ""}`;

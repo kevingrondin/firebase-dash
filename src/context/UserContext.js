@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import firebase from "firebase/app";
+import "firebase/auth";
 
 export const UserContext = createContext(null);
 
@@ -11,15 +12,22 @@ export const UserProvider = ({ children }) => {
   });
 
   useEffect(() => {
-    const unsubscribe = firebase
-      .auth()
-      .onAuthStateChanged((user) => setSession({ loading: false, user }));
+    const unsubscribe = firebase.auth().onAuthStateChanged(async (user) => {
+      let isAdmin = false;
+
+      if (user) {
+        const token = await user.getIdTokenResult();
+        isAdmin = token.claims.admin;
+      }
+
+      setSession({ loading: false, user, isAdmin });
+    });
 
     return () => unsubscribe();
   });
 
   return (
-    <UserContext.Provider value={{ session }}>
+    <UserContext.Provider value={session}>
       {!session.loading && children}
     </UserContext.Provider>
   );

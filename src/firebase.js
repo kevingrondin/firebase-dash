@@ -1,7 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
-import "firebase/storage";
+// import "firebase/storage";
 
 firebase.initializeApp({
   apiKey: process.env.REACT_APP_API_KEY,
@@ -14,29 +14,44 @@ firebase.initializeApp({
 console.log("firebase option", firebase.app().options);
 
 export const db = firebase.firestore();
-export const auth = firebase.auth();
-export const storage = firebase.storage();
+const auth = firebase.auth();
+// const storage = firebase.storage();
+
+export const createUserDocument = async (user) => {
+  const docRef = db.doc(`/users/${user.uid}`);
+  const userProfile = {
+    uid: user.uid,
+    email: user.email,
+    name: user.displayName,
+    address: "",
+    city: "",
+    state: "",
+    zip: "",
+    phone: "",
+    specialty: "",
+    ip: "",
+  };
+
+  // write to Cloud Firestore
+  return docRef.set(userProfile);
+};
+
+export const updateUserDocument = async (user) => {
+  const docRef = db.doc(`/users/${user.uid}`);
+  return docRef.update(user);
+};
 
 export const signup = async ({ firstName, lastName, email, password }) => {
-  let resp = await firebase
-    .auth()
-    .createUserWithEmailAndPassword(email, password)
-    .catch((err) => {
-      console.log("ERREUR_FIREBASE_CREATE-USER", err);
-      return err;
-    });
-  let user = resp.user;
+  const resp = await auth.createUserWithEmailAndPassword(email, password);
+  const user = resp.user;
   await user.updateProfile({ displayName: `${firstName} ${lastName}` });
+  await createUserDocument(user);
   return user;
 };
 
-export const logout = () => {
-  return firebase.auth().signOut();
-};
+export const logout = () => firebase.auth().signOut();
 
 export const login = async ({ email, password }) => {
-  let resp = await firebase.auth().signInWithEmailAndPassword(email, password);
-  // let user = resp.user;
-  // await user.updateProfile({ displayName: `${firstName} ${lastName}` });
-  // return user;
+  const resp = await auth.signInWithEmailAndPassword(email, password);
+  return resp.user;
 };
