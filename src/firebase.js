@@ -59,6 +59,11 @@ export const uploadImage = (userId, file, progress) => {
     );
   });
 };
+export const getDownloadURL = (userId) => {
+  const filePath = `users/${userId}/profile-image`;
+  return storage.ref().child(filePath).getDownloadURL();
+};
+
 
 // AUTH firebase
 export const signup = async ({ firstName, lastName, email, password }) => {
