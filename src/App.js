@@ -1,10 +1,17 @@
 import { Routes, Route, HashRouter  } from 'react-router-dom';
+
+import "./App.css";
+
 import Header from './Header';
+
+import ProfileRedirect from "./router/ProfileRedirect";
+import PrivateRoute from "./router/PrivateRoute";
+import AdminRoute from "./router/AdminRoute";
+
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Profile from './pages/Profile';
 import Users from "./pages/Users";
-import './App.css';
 
 const App = () => (
   <>
@@ -13,10 +20,11 @@ const App = () => (
       <div className="app">
         <div className="ui grid container">
           <Routes>
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/users" element={<Users />} />
-            <Route path="/profile/:id" element={<Profile />} />
+            <ProfileRedirect path="/signup" element={<Signup />} />
+            <ProfileRedirect path="/login" element={<Login />} />
+            <AdminRoute path="/users" element={<Users />} />
+            <PrivateRoute path="/profile/:id" element={<Profile />} />
+            <Route path="/" element={<Login />} />
           </Routes>
         </div>
       </div>

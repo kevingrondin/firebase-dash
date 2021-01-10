@@ -27,7 +27,7 @@ const Profile = () => {
       }
     });
     return unsubscribe;
-  }, [user.uid, setValue, id]);
+  }, [user?.uid, setValue, id]);
 
   const onSubmit = handleSubmit(async (data) => {
     try {

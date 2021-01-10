@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSession } from "../context/UserContext";
 import { Link, useNavigate } from "react-router-dom";
-import { db, updateUserDocument } from "../firebase";
+import { db } from "../firebase";
 
 const Users = () => {
   const navigate = useNavigate();
