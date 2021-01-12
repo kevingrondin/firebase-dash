@@ -1,14 +1,9 @@
 import { useEffect, useState } from "react";
-import { useSession } from "../context/UserContext";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { db } from "../firebase";
 
 const Users = () => {
-  const navigate = useNavigate();
-  const { user, isAdmin } = useSession();
   const [users, setUsers] = useState([]);
-
-  if (!isAdmin) navigate(`/profile/${user.uid}`);
 
   useEffect(() => {
     const usersRef = db.collection("users");
